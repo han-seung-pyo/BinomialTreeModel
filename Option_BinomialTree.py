@@ -17,7 +17,7 @@ r = 0.0271
 q = 0.0184
 T= 1
 N = 50
-q_t= np.array([1,4,7,10])
+stock_path = BinomialTree(s,r,sigma,T,N,q,'Q',disp=None)
 #Option using Binomial Tree
 def Option_BinomialTree(stock_path,k,r,T,sigma,N,option_type1,option_type2,disp=None):
     dt = T/N
