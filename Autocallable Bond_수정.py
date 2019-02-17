@@ -61,7 +61,7 @@ def Autocallable_bond_ad(stock_path,FV,ratio,coupon_rate,T,N,autocall_num,sigma,
         fig.show()
 
     time = -1
-    c_tme = -1
+    c_time = -1
     for j in np.arange(N,-1,-1):
         for i in range(j+1):
             if j==N:
@@ -77,13 +77,13 @@ def Autocallable_bond_ad(stock_path,FV,ratio,coupon_rate,T,N,autocall_num,sigma,
                         else:
                             df.loc[i,j]= (FV+cpn)*np.exp(-r*(autocall_node[time]-j)*dt)
                     else:
-                        df.loc[i,j] = np.exp(-r*dt)*(p*df.loc[i+1,j+1]+(1-p)*df.loc[i,j+1]) + cpn*np.exp(-r*(cpn_node[time]-j)*dt)
+                        df.loc[i,j] = np.exp(-r*dt)*(p*df.loc[i+1,j+1]+(1-p)*df.loc[i,j+1]) + cpn*np.exp(-r*(cpn_node[c_time]-j)*dt)
                 else:
                      df.loc[i,j] = np.exp(-r*dt)*(p*df.loc[i+1,j+1]+(1-p)*df.loc[i,j+1])
         
            
         if j in cpn_node_ad[:-1]:
-            c_tme = c_tme-1
+            c_time = c_time-1
         if j in autocall_node_ad:
             time -=1
                 
