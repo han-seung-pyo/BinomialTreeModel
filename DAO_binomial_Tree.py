@@ -4,6 +4,11 @@ Created on Thu Feb 14 07:20:49 2019
 
 @author: 한승표
 """
+import numpy as np
+import pandas as pd
+from scipy.stats import norm
+import matplotlib.pyplot as plt
+from tqdm import tqdm
 
 def DAO_Binomial(s,k,B,r,q,sigma,T,N,option_type,tree_type,barrier_type=None,Barrier_number=None,Barrier_time=None):
     dt = T/N
@@ -83,7 +88,8 @@ def DAO_Binomial(s,k,B,r,q,sigma,T,N,option_type,tree_type,barrier_type=None,Bar
     if barrier_type=='Discrete':
         dn= N/Barrier_number
         barrier_node = dn * Barrier_time #정수 일수도, 아닐 수도 있다!
-        barrier_node_ad = int(barrier_node)
+        barrier_node_ad = barrier_node.astype(int)
+        barrier_index = -1
         
         for i in range(N+1):
             s1 = s* (u**i)*(d**(N-i))
@@ -101,9 +107,12 @@ def DAO_Binomial(s,k,B,r,q,sigma,T,N,option_type,tree_type,barrier_type=None,Bar
                 s1 = s * (u**i) * (d**(N-j-i))
                 
                 if j in barrier_node_ad:
-                    if s1*np.exp(r*(barrier_node*dt-j*dt))<B:
+                    if s1*np.exp(r*(barrier_node[barrier_index]-j)*dt)<B:
                         vv[i] = 0
-    
+            
+            if j in barrier_node_ad:
+                barrier_index -=1
+                
             for i in range(N+1):
                 v[i] = vv[i]
         
